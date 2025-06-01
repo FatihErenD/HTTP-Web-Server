@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Python HTTP Sunucusu</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Sunucu Çalışıyor</h1>
+    <p>Bu sayfa, <code>static/index.html</code> dosyasından sunulmaktadır.</p>
+    <p><a href="/api/hello">/api/hello</a> → GET testi</p>
+
+    <hr>
+
+    <h2>POST Testi: /api/test-post</h2>
+    <form id="echoForm">
+        <label for="isim">İsminiz:</label>
+        <input type="text" id="isim" name="isim" required>
+        <button type="submit">Gönder</button>
+    </form>
+
+    <pre id="sonuc" style="margin-top:20px; background:#222; padding:10px; border-radius:8px; color:#fff;"></pre>
+
+    <script>
+        const form = document.getElementById('echoForm');
+        const sonuc = document.getElementById('sonuc');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const isim = document.getElementById('isim').value;
+
+            const response = await fetch('/api/test-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ isim: isim })
+            });
+
+            const data = await response.json();
+            sonuc.textContent = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>
